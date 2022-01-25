@@ -7,6 +7,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: kaniko
+  namespace: devops
 spec:
   containers:
   - name: kaniko
