@@ -41,12 +41,9 @@ spec:
                 """
             }
        stage('Deploy') {
-           
-           container('kubectl') {
-		       withKubeConfig([credentialsId: 'kube-devops-jenkins-dynamic-agent-token',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
-               sh """
-                  kubectl apply -f deploy/k8s.yaml 
-                """
+            container('kubectl') {
+		       withKubeConfig([credentialsId: 'jenkins-admin',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
+               sh "kubectl apply -f deploy/k8s.yaml"
            }
          }
        }
