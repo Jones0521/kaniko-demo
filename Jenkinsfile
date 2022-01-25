@@ -41,7 +41,7 @@ spec:
                 """
             }
        stage('Deploy') {
-	       withCredentials([string(credentialsId: 'kube-devops-jenkins-dynamic-agent-token', variable: 'KUBECONFIG')])
+	       withCredentials([string(credentialsId: 'kube-devops-jenkins-dynamic-agent-token', variable: 'KUBECONFIG')]) {
 	     // withCredentials([credentialsId: 'kube-devops-jenkins-dynamic-agent-token', variable: 'KUBECONFIG'])
          // withKubeConfig([credentialsId: 'kube-devops-jenkins-dynamic-agent-token',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']){
            container('kubectl') {
