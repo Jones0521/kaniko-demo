@@ -37,7 +37,7 @@ spec:
         stage('Build Image')
             container('kaniko') {
                 sh """
-                /kaniko/executor -c `pwd`/ -f `pwd`/image/Dockerfile -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:hello
+                /kaniko/executor -c `pwd`/ -f `pwd`/image/Dockerfile -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:hello -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:latest
                 """
             }
        stage('Deploy') {
