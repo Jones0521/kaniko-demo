@@ -1,6 +1,6 @@
 podTemplate(cloud: 'kubernetes',containers: [
     containerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
-    containerTemplate(args: '9999999', command: 'sleep', image: 'rancher/kubectl:v1.22.2',name: 'kubectl',ttyEnabled: true),
+    containerTemplate(args: '9999999', command: 'sleep', image: 'uhub.service.ucloud.cn/uk8sdemo/kubectl:latest',name: 'kubectl',ttyEnabled: true),
   ], 
   yaml: """\
 apiVersion: v1
@@ -10,10 +10,10 @@ metadata:
   namespace: devops
 spec:
   containers:
-  - name: jenkins-dynamic-agent01
-    image: jenkins/inbound-agent:latest-jdk11
   - name: kaniko
-    image: gcr.io/kaniko-project/executor:latest
+    image: uhub.service.ucloud.cn/uk8sdemo/executor:debug
+    command:
+    - /busybox/cat
     tty: true
     volumeMounts:
       - name: kaniko-secret
