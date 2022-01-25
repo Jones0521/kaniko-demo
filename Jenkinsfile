@@ -11,9 +11,7 @@ metadata:
 spec:
   containers:
   - name: kaniko
-    image: uhub.service.ucloud.cn/uk8sdemo/executor:debug
-    command:
-    - /busybox/cat
+    image: public.ecr.aws/eag/kaniko:latest
     tty: true
     volumeMounts:
       - name: kaniko-secret
