@@ -73,7 +73,7 @@ spec:
                 """
             }
        stage('Deploy') {
-         withCredentials([file(credentialsId: 'kube-devops-jenkins-dynamic-agent-token', variable: 'KUBECONFIG')]){
+         withCredentials([string(credentialsId: 'kube-devops-jenkins-dynamic-agent-token', variable: 'KUBECONFIG')]){
            container('kubectl') {
            sh """
               mkdir -p ~/.kube && cp ${KUBECONFIG} ~/.kube/config
