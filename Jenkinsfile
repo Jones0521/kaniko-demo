@@ -25,24 +25,24 @@ spec:
     - name: kaniko
       image: gcr.io/kaniko-project/executor:latest
 	  resources:
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-      requests:
-        cpu: 500m
-        memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
       command:
       - /busybox/cat
       tty: true
       volumeMounts:
         - name: kaniko-secret
           mountPath: /kaniko/.docker
-    restartPolicy: Never
-    volumes:
-      - name: kaniko-secret
-        secret:
-          secretName: docker-cicd-config
-      """.stripIndent()
+  restartPolicy: Never
+  volumes:
+    - name: kaniko-secret
+      secret:
+        secretName: docker-cicd-config
+    """.stripIndent()
    ) {
     node(POD_LABEL) {
         stage('Clone') {
