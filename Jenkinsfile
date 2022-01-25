@@ -24,13 +24,7 @@ spec:
           memory: 512Mi
     - name: kaniko
       image: gcr.io/kaniko-project/executor:latest
-	  resources:
-        limits:
-          cpu: 1000m
-          memory: 2Gi
-        requests:
-          cpu: 500m
-          memory: 512Mi
+	  imagePullPolicy: IfNotPresent
       command:
       - /busybox/cat
       tty: true
