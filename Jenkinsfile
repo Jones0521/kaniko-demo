@@ -1,6 +1,6 @@
 podTemplate(containers: [
-    containerTemplate(name: 'golang', image: 'arm64v8/golang:latest', ttyEnabled: true, command: 'cat'),
-    containerTemplate(name: 'kubectl', image: 'rancher/kubectl:v1.22.2', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'golang', image: 'arm64v8/golang:latest', ttyEnabled: true, command: '/usr/bin/cat'),
+    containerTemplate(name: 'kubectl', image: 'rancher/kubectl:v1.22.2', command: '/usr/bin/cat', ttyEnabled: true),
   ],
   yaml: """\
 apiVersion: v1
