@@ -7,11 +7,13 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: kaniko
+  namespace: devops
 spec:
   containers:
+  - name: jenkins-dynamic-agent01
+    image: jenkins/inbound-agent:latest-jdk11
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    command: ['sh', '-c','sleep 99999']
     tty: true
     volumeMounts:
       - name: kaniko-secret
