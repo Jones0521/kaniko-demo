@@ -2,14 +2,18 @@ podTemplate(containers: [
     containerTemplate(name: 'golang',  image: 'arm64v8/golang:latest',  ttyEnabled: true, command: 'sleep 99999'),
     containerTemplate(name: 'kubectl', image: 'rancher/kubectl:v1.22.2',ttyEnabled: true, command: 'sleep 99999'),
   ], 
-  yaml: """\
-apiVersion: v1
+
+yaml '''
+---
 kind: Pod
+apiVersion: v1
 metadata:
-  name: kaniko
+  labels:
+    k8s-app: jenkins-dynamic-agent01
+  name: jenkins-dynamic-agent01
   namespace: devops
 spec:
-  containers:
+containers:
   - name: jenkins-dynamic-agent01
     image: jenkins/inbound-agent:latest-jdk11
     imagePullPolicy: IfNotPresent
@@ -23,12 +27,12 @@ spec:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
 	resources:
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-      requests:
-        cpu: 500m
-        memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
     command:
     - /busybox/cat
     tty: true
@@ -40,7 +44,7 @@ spec:
     - name: kaniko-secret
       secret:
         secretName: docker-cicd-config
-    """.stripIndent()
+    '''.stripIndent()
   ) {
     node(POD_LABEL) {
         stage('Clone') {
