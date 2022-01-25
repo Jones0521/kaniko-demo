@@ -1,36 +1,21 @@
-podTemplate(containers: [
-    containerTemplate(name: 'golang',  image: 'arm64v8/golang:latest',  ttyEnabled: true, command: 'sleep 99999'),
-    containerTemplate(name: 'kubectl', image: 'rancher/kubectl:v1.22.2',ttyEnabled: true, command: 'sleep 99999'),
+podTemplate(cloud: 'kubernetes',containers: [
+    containerTemplate(name: 'golang',  image: 'arm64v8/golang:latest',  ttyEnabled: true, command: 'sleep' args: '99999'),
+    containerTemplate(name: 'kubectl', image: 'rancher/kubectl:v1.22.2',ttyEnabled: true, command: 'sleep' args: '99999'),
   ], 
   yaml: """\
-kind: Pod
 apiVersion: v1
+kind: Pod
 metadata:
-  labels:
-    k8s-app: jenkins-dynamic-agent01
-  name: jenkins-dynamic-agent01
-  namespace: devops
+  name: kaniko
 spec:
   containers:
-    - name: jenkins-dynamic-agent01
-      image: jenkins/inbound-agent:latest-jdk11
-      imagePullPolicy: IfNotPresent
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 2Gi
-        requests:
-          cpu: 500m
-          memory: 512Mi
-    - name: kaniko
-      image: gcr.io/kaniko-project/executor:latest
-	  imagePullPolicy: IfNotPresent
-      command:
-      - /busybox/cat
-      tty: true
-      volumeMounts:
-        - name: kaniko-secret
-          mountPath: /kaniko/.docker
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:latest
+    command: ['sh', '-c','sleep 99999']
+    tty: true
+    volumeMounts:
+      - name: kaniko-secret
+        mountPath: /kaniko/.docker
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
