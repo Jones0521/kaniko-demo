@@ -1,6 +1,6 @@
 podTemplate(cloud: 'kubernetes',containers: [
-    containerTemplate(name: 'golang',  image: 'arm64v8/golang:latest',  ttyEnabled: true, command: 'sleep' args: '99999'),
-    containerTemplate(name: 'kubectl', image: 'rancher/kubectl:v1.22.2',ttyEnabled: true, command: 'sleep' args: '99999'),
+    containerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
+    containerTemplate(args: '9999999', command: 'sleep', image: 'rancher/kubectl:v1.22.2',name: 'kubectl',ttyEnabled: true),
   ], 
   yaml: """\
 apiVersion: v1
