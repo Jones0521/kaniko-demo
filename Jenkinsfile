@@ -1,6 +1,6 @@
 podTemplate(containers: [
-    containerTemplate(name: 'golang',  namespace: 'devops',  image: 'arm64v8/golang:latest',  ttyEnabled: true, command: '/usr/bin/cat'),
-    containerTemplate(name: 'kubectl', namespace: 'devops',  image: 'rancher/kubectl:v1.22.2',ttyEnabled: true, command: '/usr/bin/cat'),
+    containerTemplate(name: 'golang',  namespace: 'devops',  image: 'arm64v8/golang:latest',  ttyEnabled: true, command: 'ls'),
+    containerTemplate(name: 'kubectl', namespace: 'devops',  image: 'rancher/kubectl:v1.22.2',ttyEnabled: true, command: 'ls'),
   ], 
   yaml: """\
 apiVersion: v1
@@ -27,7 +27,7 @@ spec:
   ) {
     node(POD_LABEL) {
         stage('Clone') {
-            git url: '{{REPO}}'
+            git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
         }
         stage('Compile') {
             container('golang') {
