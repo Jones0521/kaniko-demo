@@ -41,10 +41,10 @@ spec:
                 """
             }
        stage('Deploy') {
-         withCredentials([file(credentialsId: 'kube-devops-jenkins-dynamic-agent-token', variable: 'KUBECONFIG')]){
+         withCredentials([(credentialsId: 'kube-devops-jenkins-dynamic-agent-token',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com')]){
            container('kubectl') {
            sh """
-              mkdir -p ~/.kube && cp ${KUBECONFIG} ~/.kube/config
+              // mkdir -p ~/.kube && cp ${KUBECONFIG} ~/.kube/config
               kubectl apply -f deploy/k8s.yaml 
             """
             
