@@ -46,7 +46,11 @@ spec:
          // withKubeConfig([credentialsId: 'kube-devops-jenkins-dynamic-agent-token',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']){
            container('kubectl') {
            sh """
-              mkdir -p ~/.kube && cp ${KUBECONFIG} ~/.kube/config
+		      kubectl config set-cluster deveks01 --server= https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com --kubeconfig=jenkins.kubeconfig
+              kubectl config set-credentials jenkins-token --token=${KUBECONFIG} --kubeconfig=jenkins.kubeconfig
+			  kubectl config set-context jenkins-agent --cluster=deveks01 --user=jenkins-token --kubeconfig=jenkins.kubeconfig
+		      kubectl config use-context jenkins-agent --kubeconfig=jenkins.kubeconfig
+			  cat jenkins.kubeconfig
               kubectl apply -f deploy/k8s.yaml 
             """
             
