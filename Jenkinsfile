@@ -1,4 +1,4 @@
-podTemplate(cloud: 'kubernetes',containers: [
+﻿podTemplate(cloud: 'kubernetes',containers: [
     containerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
     containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true),
   ],
@@ -19,10 +19,6 @@ spec:
         mountPath: /kaniko/.docker/
       - name: aws-secret
         mountPath: /root/.aws/
-    image: public.ecr.aws/docker/library/maven:3-jdk-8
-    imagePullPolicy: IfNotPresent
-    name: maven
-    tty: true
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
