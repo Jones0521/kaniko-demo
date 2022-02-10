@@ -1,8 +1,8 @@
 pipeline {
-  podTemplate(cloud: 'kubernetes',containers: [
-    containerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
-    containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true),
-  ], 
+  agent {
+    kubernetes {
+        cloud 'kubernetes'
+		slaveConnectTimeout 1200
   yaml: """\
 apiVersion: v1
 kind: Pod
@@ -26,6 +26,20 @@ spec:
     -  "9999999"
     command:
     - "sleep"
+  - name: golang
+    image: arm64v8/golang:latest
+    tty: true
+    args:
+    -  "9999999"
+    command:
+    - "sleep"
+  - name: kubectl
+    image: public.ecr.aws/nslhub/k8s-kubectl:v1.22.5
+    tty: true
+    args:
+    -  "9999999"
+    command:
+    - "sleep"
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
@@ -35,7 +49,9 @@ spec:
       secret:
         secretName: kaniko-aws-secret
     """.stripIndent()
-  )
+        
+    }
+  }
     stages {
         stage('Clone') {
             steps {
