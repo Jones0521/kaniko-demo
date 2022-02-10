@@ -2,7 +2,8 @@ podTemplate(cloud: 'kubernetes',containers: [
     containerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
     containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true),
   ],
-  yaml: """\
+  yaml '''
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -27,7 +28,7 @@ spec:
     - name: aws-secret
       secret:
         secretName: kaniko-aws-secret
-    """.stripIndent()
+    '''.stripIndent()
    ) {
     node(POD_LABEL) {
         stage('Clone') {
