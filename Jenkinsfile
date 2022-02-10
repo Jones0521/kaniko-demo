@@ -16,7 +16,7 @@ spec:
     volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker/
-	  - name: aws-secret
+      - name: aws-secret
         mountPath: /root/.aws/
   restartPolicy: Never
   volumes:
