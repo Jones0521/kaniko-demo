@@ -12,14 +12,16 @@ spec:
   containers:
     name: kaniko
     image: public.ecr.aws/eag/kaniko:latest
+	imagePullPolicy: IfNotPresent
     tty: true
     volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker/
       - name: aws-secret
         mountPath: /root/.aws/
-    name: maven
     image: public.ecr.aws/docker/library/maven:3-jdk-8
+	imagePullPolicy: IfNotPresent
+    name: maven
     tty: true
   restartPolicy: Never
   volumes:
