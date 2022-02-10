@@ -16,11 +16,16 @@ spec:
     volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker/
+	  - name: aws-secret
+        mountPath: /root/.aws/
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
       secret:
         secretName: docker-cicd-config
+    - name: aws-secret
+      secret:
+        secretName: kaniko-aws-secret
     """.stripIndent()
    ) {
     node(POD_LABEL) {
