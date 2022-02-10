@@ -24,11 +24,11 @@ spec:
     -  "9999999"
     command:
     - "sleep"
-	image: "public.ecr.aws/docker/library/maven:3-jdk-8"
+    image: "public.ecr.aws/docker/library/maven:3-jdk-8"
     imagePullPolicy: "IfNotPresent"
     name: "maven"
-	tty: true
-	args:
+    tty: true
+    args:
     -  "9999999"
     command:
     - "sleep"
