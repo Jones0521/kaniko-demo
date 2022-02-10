@@ -3,7 +3,7 @@ pipeline {
     kubernetes {
         cloud 'kubernetes'
 		slaveConnectTimeout 1200
-  yaml: """\
+    yaml '''
 apiVersion: v1
 kind: Pod
 metadata:
@@ -48,7 +48,7 @@ spec:
     - name: aws-secret
       secret:
         secretName: kaniko-aws-secret
-    """ 
+    ''' 
     }
   }
     stages {
