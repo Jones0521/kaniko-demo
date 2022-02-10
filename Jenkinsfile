@@ -21,6 +21,10 @@ spec:
   - name: maven
     image: public.ecr.aws/docker/library/maven:3-jdk-8
     tty: true
+    args:
+    -  "9999999"
+    command:
+    - "sleep"
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
