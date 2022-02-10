@@ -3,7 +3,7 @@ pipeline{
       kubernetes {
         cloud 'kubernetes'
         podTemplate(containers: [
-          ontainerTemplate( args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true ),
+          containerTemplate( args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true ),
           containerTemplate( args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true ),
         ], 
         yaml: """\
@@ -35,7 +35,7 @@ spec:
     )
       }
     }
-    node(POD_LABEL){
+    node(POD_LABEL) {
         stage('Clone') {
             git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
         }
