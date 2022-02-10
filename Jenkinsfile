@@ -1,12 +1,9 @@
-pipeline{
+pipeline {
     agent {
-      kubernetes {
-      cloud 'kubernetes'
-        podTemplate(containers: [
-          containerTemplate( args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true ),
-          containerTemplate( args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true ),
-        ], 
-        yaml: """\
+        kubernetes {
+            cloud 'kubernetes'
+		    slaveConnectTimeout 1200
+        yaml '''
 apiVersion: v1
 kind: Pod
 metadata:
@@ -23,6 +20,29 @@ spec:
         mountPath: /kaniko/.docker/
       - name: aws-secret
         mountPath: /root/.aws/
+    args:
+    -  "9999999"
+    command:
+    - "sleep"
+	image: "public.ecr.aws/docker/library/maven:3-jdk-8"
+    imagePullPolicy: "IfNotPresent"
+    name: "maven"
+	tty: true
+	args:
+    -  "9999999"
+    command:
+    - "sleep"
+    image: "arm64v8/golang:latest"
+    imagePullPolicy: "IfNotPresent"
+	name: golang
+	tty: true
+	args:
+    -  "9999999"
+    command:
+    - "sleep"
+    image: "public.ecr.aws/nslhub/k8s-kubectl:v1.22.5"
+    imagePullPolicy: "IfNotPresent"
+    name: "kubectl"
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
@@ -31,11 +51,10 @@ spec:
     - name: aws-secret
       secret:
         secretName: kaniko-aws-secret
-    """.stripIndent()
-    )
-      }
+'''
+        }
     }
-    node(POD_LABEL) {
+    stages { 
         stage('Clone') {
             git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
         }
