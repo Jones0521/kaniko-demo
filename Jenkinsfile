@@ -1,7 +1,7 @@
 pipeline{
     agent {
       kubernetes {
-        cloud 'kubernetes'
+      cloud 'kubernetes'
         podTemplate(containers: [
           containerTemplate( args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true ),
           containerTemplate( args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true ),
