@@ -62,12 +62,12 @@ spec:
         }
         stage('Compile'){
 		    steps{
-            container('golang'){
+                container('golang'){
                     sh """
                     make  
                     """
+                }
             }
-			
         }
         stage('Build Image'){
             container('kaniko'){
