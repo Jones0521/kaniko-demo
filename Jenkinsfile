@@ -10,7 +10,7 @@ metadata:
   namespace: devops
 spec:
   containers:
-  - name: kaniko
+    name: kaniko
     image: public.ecr.aws/eag/kaniko:latest
     tty: true
     volumeMounts:
@@ -19,13 +19,12 @@ spec:
       - name: aws-secret
         mountPath: /root/.aws/
   restartPolicy: Never
-  - name: maven
+    name: maven
     image: public.ecr.aws/docker/library/maven:3-jdk-8
     tty: true
 #    volumeMounts:
 #      - name: m2
 #        mountPath: /root/.m2/
-  restartPolicy: Never
   volumes:
     - name: kaniko-secret
       secret:
