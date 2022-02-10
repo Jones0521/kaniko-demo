@@ -3,7 +3,7 @@ podTemplate(cloud: 'kubernetes',containers: [
     containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true),
 	containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/docker/library/maven:3-jdk-8',name: 'maven',ttyEnabled: true),
   ],
-  volumes: [hostPathVolume(hostPath: '/opt/m2', mountPath: '/root/.m2/')]),
+  volumes: [hostPathVolume(hostPath: '/opt/m2', mountPath: '/root/.m2/')],
   yaml: """\
 apiVersion: v1
 kind: Pod
