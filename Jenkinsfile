@@ -34,9 +34,9 @@ spec:
     - "sleep"
     image: "arm64v8/golang:latest"
     imagePullPolicy: "IfNotPresent"
-	name: golang
-	tty: true
-	args:
+    name: golang
+    tty: true
+    args:
     -  "9999999"
     command:
     - "sleep"
