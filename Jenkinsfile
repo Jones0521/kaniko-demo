@@ -55,24 +55,25 @@ spec:
         }
     }
     stages { 
-        stage('Clone') {
+        stage('Clone'){
             git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
         }
-        stage('Compile') {
-            container('golang') {
+        stage('Compile'){
+            container('golang'){
                     sh """
                     make  
                     """
             }
         }
-        stage('Build Image')
-            container('kaniko') {
+        stage('Build Image'){
+            container('kaniko'){
                 sh """
                 /kaniko/executor -c `pwd`/ -f `pwd`/image/Dockerfile -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:hello2 -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:latest
                 """
             }
-       stage('Deploy') {
-            container('kubectl') {
+		}
+        stage('Deploy'){
+            container('kubectl'){
                 withKubeConfig([credentialsId: 'jenkins-admin',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
                     sh "kubectl apply -f deploy/k8s.yaml"
                 }
