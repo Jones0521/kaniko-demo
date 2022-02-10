@@ -1,9 +1,8 @@
-pipeline {
-    agent {
-        kubernetes {
-            cloud 'kubernetes'
-		    slaveConnectTimeout 1200
-        yaml '''
+podTemplate(cloud: 'kubernetes',containers: [
+    containerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
+    containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true),
+  ], 
+  yaml: """\
 apiVersion: v1
 kind: Pod
 metadata:
@@ -11,38 +10,17 @@ metadata:
   namespace: devops
 spec:
   containers:
-    name: kaniko
+  - name: kaniko
     image: public.ecr.aws/eag/kaniko:latest
-    imagePullPolicy: IfNotPresent
     tty: true
     volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker/
       - name: aws-secret
         mountPath: /root/.aws/
-    args:
-    -  "9999999"
-    command:
-    - "sleep"
-    image: "public.ecr.aws/docker/library/maven:3-jdk-8"
-    imagePullPolicy: "IfNotPresent"
-    name: "maven"
+  - name: maven
+    image: public.ecr.aws/docker/library/maven:3-jdk-8
     tty: true
-    args:
-    -  "9999999"
-    command:
-    - "sleep"
-    image: "arm64v8/golang:latest"
-    imagePullPolicy: "IfNotPresent"
-    name: golang
-    tty: true
-    args:
-    -  "9999999"
-    command:
-    - "sleep"
-    image: "public.ecr.aws/nslhub/k8s-kubectl:v1.22.5"
-    imagePullPolicy: "IfNotPresent"
-    name: "kubectl"
   restartPolicy: Never
   volumes:
     - name: kaniko-secret
@@ -51,41 +29,31 @@ spec:
     - name: aws-secret
       secret:
         secretName: kaniko-aws-secret
-    '''
+    """.stripIndent()
+   ) {
+    node(POD_LABEL) {
+        stage('Clone') {
+            git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
         }
-    }
-    stages { 
-        stage('Clone'){
-		    steps{
-                git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
-            }
-        }
-        stage('Compile'){
-		    steps{
-                container('golang'){
+        stage('Compile') {
+            container('golang') {
                     sh """
                     make  
                     """
-                }
             }
         }
-        stage('Build Image'){
-		    steps{
-                container('kaniko'){
-                    sh """
-                    /kaniko/executor -c `pwd`/ -f `pwd`/image/Dockerfile -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:hello2 -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:latest
-                    """
-                }
+        stage('Build Image')
+            container('kaniko') {
+                sh """
+                /kaniko/executor -c `pwd`/ -f `pwd`/image/Dockerfile -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:hello2 -d 239620982073.dkr.ecr.ap-south-1.amazonaws.com/sundry:latest
+                """
             }
-		}
-        stage('Deploy'){
-		    steps{
-                container('kubectl'){
-                    withKubeConfig([credentialsId: 'jenkins-admin',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
-                        sh "kubectl apply -f deploy/k8s.yaml"
-                    }
-                }
-            }
-        }
+       stage('Deploy') {
+            container('kubectl') {
+		       withKubeConfig([credentialsId: 'jenkins-admin',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
+               sh "kubectl apply -f deploy/k8s.yaml"
+           }
+         }
+       }
     }
 }
