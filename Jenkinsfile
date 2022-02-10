@@ -18,13 +18,13 @@ spec:
         mountPath: /kaniko/.docker/
       - name: aws-secret
         mountPath: /root/.aws/
-  restartPolicy: Never
-    name: maven
-    image: public.ecr.aws/docker/library/maven:3-jdk-8
+  - image: public.ecr.aws/docker/library/maven:3-jdk-8
+	name: maven
     tty: true
 #    volumeMounts:
 #      - name: m2
 #        mountPath: /root/.m2/
+  restartPolicy: Never
   volumes:
     - name: kaniko-secret
       secret:
