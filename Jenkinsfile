@@ -56,7 +56,7 @@ spec:
               }
             }
         }
-        stage('Build Image')
+        stage('Build Image') {
             steps {
               container('kaniko') {
                 sh """
@@ -64,6 +64,7 @@ spec:
                 """
               }
             }
+		}
         stage('Deploy') {
             steps {
               container('kubectl') {
