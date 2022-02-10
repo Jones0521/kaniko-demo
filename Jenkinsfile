@@ -48,8 +48,7 @@ spec:
     - name: aws-secret
       secret:
         secretName: kaniko-aws-secret
-    """.stripIndent()
-        
+    """ 
     }
   }
     stages {
