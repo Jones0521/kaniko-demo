@@ -56,14 +56,18 @@ spec:
     }
     stages { 
         stage('Clone'){
-            git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
+		    steps{
+                git branch: 'main', url: 'https://github.com/Jones0521/kaniko-demo.git'
+            }
         }
         stage('Compile'){
+		    steps{
             container('golang'){
                     sh """
                     make  
                     """
             }
+			
         }
         stage('Build Image'){
             container('kaniko'){
