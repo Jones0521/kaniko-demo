@@ -1,10 +1,10 @@
-pipeline{
+pipeline {
     agent {
       kubernetes {
         cloud 'kubernetes'
-	    podTemplate(containers: [
-          ontainerTemplate(args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true),
-          containerTemplate(args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true),
+            podTemplate( containers: [
+          ontainerTemplate( args: '9999999', command: 'sleep', image: 'arm64v8/golang:latest',name: 'golang',  ttyEnabled: true ),
+          containerTemplate( args: '9999999', command: 'sleep', image: 'public.ecr.aws/nslhub/k8s-kubectl:v1.22.5',name: 'kubectl',ttyEnabled: true ),
         ], 
         yaml: """\
 ---
@@ -33,7 +33,7 @@ spec:
       secret:
         secretName: kaniko-aws-secret
     """.stripIndent()
-   ) 
+   )
         }
     }
    {
@@ -56,7 +56,7 @@ spec:
                 }
        stage('Deploy') {
             container('kubectl') {
-		       withKubeConfig([credentialsId: 'jenkins-admin',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
+                       withKubeConfig([credentialsId: 'jenkins-admin',serverUrl: 'https://45F0A226C5356ACE9652E8EF53291533.gr7.ap-south-1.eks.amazonaws.com']) {
                sh "kubectl apply -f deploy/k8s.yaml"
                     }
                 }
